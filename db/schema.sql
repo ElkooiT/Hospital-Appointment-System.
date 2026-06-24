@@ -1,6 +1,6 @@
 -- ============================================================
 -- Hospital Appointment System — Database Schema
--- Chapter 7: JDBC / Database Programming
+--  JDBC / Database Programming
 -- Run this script once before starting the application.
 -- ============================================================
 
