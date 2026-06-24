@@ -13,23 +13,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * CHAPTER 6 (Collections) + CHAPTER 4 (Exception Handling)
- *
- * Central manager for all in-memory data.
- * Demonstrates:
- *   - ArrayList: dynamic list of appointments
- *   - HashMap: fast patient/doctor lookup by ID
- *   - Iteration over collections
- *   - Throwing and propagating custom exceptions
- */
+
 public class AppointmentManager {
 
-    // CHAPTER 6: HashMap for O(1) lookup by ID
+   
     private Map<String, Patient>     patients     = new HashMap<>();
     private Map<String, Doctor>      doctors      = new HashMap<>();
 
-    // CHAPTER 6: ArrayList for ordered list of all appointments
+    
     private List<Appointment>        appointments = new ArrayList<>();
 
     private static final LocalTime OPENING_TIME = LocalTime.of(8, 0);
@@ -43,13 +34,13 @@ public class AppointmentManager {
     }
 
     public Patient getPatient(String id) throws PatientNotFoundException {
-        // CHAPTER 4: throw custom exception if not found
+        
         Patient p = patients.get(id);
         if (p == null) throw new PatientNotFoundException(id);
         return p;
     }
 
-    // CHAPTER 6: Returns a new list — callers can't mutate internal state
+    
     public List<Patient> getAllPatients() {
         return new ArrayList<>(patients.values());
     }
@@ -70,7 +61,7 @@ public class AppointmentManager {
     }
 
     public List<Doctor> getDoctorsBySpecialization(String spec) {
-        // CHAPTER 6: Iterating a collection with filtering
+        
         List<Doctor> result = new ArrayList<>();
         for (Doctor d : doctors.values()) {
             if (d.getSpecialization().equalsIgnoreCase(spec)) {
@@ -82,10 +73,7 @@ public class AppointmentManager {
 
     // ─── Appointment Operations ───────────────────────────────────────────
 
-    /**
-     * Books a scheduled appointment.
-     * CHAPTER 4: Throws checked exceptions the caller must handle.
-     */
+    
     public ScheduledAppointment bookScheduledAppointment(
             String patientId, String doctorId,
             LocalDateTime dateTime, int durationMinutes,
@@ -93,24 +81,24 @@ public class AppointmentManager {
             throws PatientNotFoundException, AppointmentConflictException,
                    InvalidTimeSlotException {
 
-        // CHAPTER 4: Validate time slot — throws InvalidTimeSlotException
+        
         validateTimeSlot(dateTime);
 
-        // CHAPTER 4: Retrieve patient — throws PatientNotFoundException
+        
         Patient patient = getPatient(patientId);
         Doctor doctor = doctors.get(doctorId);
         if (doctor == null) {
             throw new IllegalArgumentException("Doctor ID not found: " + doctorId);
         }
 
-        // CHAPTER 4: Check for conflicts — throws AppointmentConflictException
+        
         checkForConflict(doctor, dateTime);
 
         ScheduledAppointment appt = new ScheduledAppointment(
                 patient, doctor, dateTime, durationMinutes, reason);
         appointments.add(appt);
 
-        // CHAPTER 3 (Polymorphism via Notifiable interface): both objects notified
+        
         patient.sendReminder("Your appointment with Dr. " + doctor.getName() +
                              " is confirmed for " + appt.getFormattedDateTime());
         doctor.sendReminder("New appointment scheduled: Patient " + patient.getName() +
@@ -143,11 +131,11 @@ public class AppointmentManager {
     }
 
     public void cancelAppointment(String appointmentId) {
-        // CHAPTER 6: Iterating ArrayList to find by ID
+        
         for (Appointment appt : appointments) {
             if (appt.getAppointmentId().equals(appointmentId)) {
                 appt.setStatus(Appointment.Status.CANCELLED);
-                // CHAPTER 3 (Polymorphism): Notifiable.sendReminder called on both
+                
                 appt.getPatient().sendReminder("Your appointment " + appointmentId + " has been cancelled.");
                 appt.getDoctor().cancel(appt.getFormattedDateTime());
                 System.out.println("❌ Appointment " + appointmentId + " cancelled.");
