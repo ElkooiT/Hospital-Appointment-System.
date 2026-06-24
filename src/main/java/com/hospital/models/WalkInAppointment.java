@@ -2,13 +2,7 @@ package com.hospital.models;
 
 import java.time.LocalDateTime;
 
-/**
- * CHAPTER 2 (Inheritance)
- *
- * An unscheduled walk-in visit. No advance booking — patient arrives
- * and is assigned the next available doctor.
- * Demonstrates: second concrete subclass, unique fields not in parent.
- */
+
 public class WalkInAppointment extends Appointment {
 
     private static final long serialVersionUID = 1L;
