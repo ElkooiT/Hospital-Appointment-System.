@@ -9,29 +9,19 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/**
- * CHAPTER 5 (Files & Streams)
- *
- * Generates human-readable text reports using character streams.
- * Demonstrates:
- *   - FileWriter / BufferedWriter (Character streams — Ch5)
- *   - PrintWriter for formatted output (Ch5)
- *   - Contrast with binary streams in AppointmentFileHandler
- */
+
 public class ReportGenerator {
 
     private static final String REPORTS_DIR = "data/reports/";
     private static final DateTimeFormatter FILE_FMT =
             DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 
-    /**
-     * CHAPTER 5: Write appointment receipt using BufferedWriter (character stream).
-     */
+    
     public static String generateAppointmentReceipt(Appointment appt) throws IOException {
         new File(REPORTS_DIR).mkdirs();
         String filename = REPORTS_DIR + "receipt_" + appt.getAppointmentId() + ".txt";
 
-        // CHAPTER 5: BufferedWriter wraps FileWriter — buffered character stream
+        
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
             bw.write("=".repeat(50));
             bw.newLine();
@@ -52,9 +42,7 @@ public class ReportGenerator {
         return filename;
     }
 
-    /**
-     * CHAPTER 5: Full system report using PrintWriter (formatted text output).
-     */
+    
     public static String generateSystemReport(
             List<Patient> patients,
             List<Doctor> doctors,
@@ -64,7 +52,7 @@ public class ReportGenerator {
         String filename = REPORTS_DIR + "system_report_" +
                 LocalDateTime.now().format(FILE_FMT) + ".txt";
 
-        // CHAPTER 5: PrintWriter for formatted text output
+        
         try (PrintWriter pw = new PrintWriter(new FileWriter(filename))) {
             pw.println("=".repeat(60));
             pw.println("          HOSPITAL APPOINTMENT SYSTEM — FULL REPORT");
