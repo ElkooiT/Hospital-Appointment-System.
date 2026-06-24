@@ -2,12 +2,7 @@ package com.hospital.models;
 
 import java.time.LocalDateTime;
 
-/**
- * CHAPTER 2 (Inheritance)
- *
- * A pre-booked appointment with a specific time slot.
- * Extends Appointment — demonstrates concrete subclass with added behaviour.
- */
+
 public class ScheduledAppointment extends Appointment {
 
     private static final long serialVersionUID = 1L;
