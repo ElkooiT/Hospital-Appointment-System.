@@ -1,12 +1,6 @@
 package com.hospital.exceptions;
 
-/**
- * CHAPTER 4 (Exception Handling)
- *
- * Thrown when a requested appointment time is outside working hours
- * or is set in the past.
- * Demonstrates: passing contextual data through custom exceptions.
- */
+
 public class InvalidTimeSlotException extends Exception {
 
     private String requestedSlot;
