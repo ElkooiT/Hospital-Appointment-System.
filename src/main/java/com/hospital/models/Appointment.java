@@ -4,13 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * CHAPTER 1 (OOP) + CHAPTER 2 (Inheritance)
- *
- * Abstract base for all appointment types.
- * ScheduledAppointment and WalkInAppointment extend this.
- * Demonstrates: abstract classes, encapsulation, static fields (ID counter).
- */
+
 public abstract class Appointment implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -20,7 +14,7 @@ public abstract class Appointment implements Serializable {
     private static final DateTimeFormatter FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    // CHAPTER 1: Static field shared across all Appointment objects
+    
     private static int idCounter = 1000;
 
     private String appointmentId;
@@ -31,7 +25,7 @@ public abstract class Appointment implements Serializable {
     private String notes;
 
     public Appointment(Patient patient, Doctor doctor, LocalDateTime dateTime) {
-        // CHAPTER 1: Static method call to generate unique ID
+        
         this.appointmentId = "APT-" + (++idCounter);
         this.patient = patient;
         this.doctor = doctor;
@@ -40,7 +34,7 @@ public abstract class Appointment implements Serializable {
         this.notes = "";
     }
 
-    // CHAPTER 2: Abstract — each subtype describes itself differently
+    
     public abstract String getType();
 
     public String getSummary() {
