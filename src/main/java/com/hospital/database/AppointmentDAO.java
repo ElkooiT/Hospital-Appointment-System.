@@ -7,15 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * CHAPTER 7 (JDBC — Database Programming)
- *
- * Data Access Object for appointments table.
- * Demonstrates:
- *   - PreparedStatement with multiple types (String, Timestamp, int, boolean)
- *   - Scrollable ResultSet (TYPE_SCROLL_INSENSITIVE — Ch7 Advanced ResultSets)
- *   - JOIN query to retrieve related patient/doctor info
- */
+
 public class AppointmentDAO {
 
     public void insertAppointment(Appointment appt) throws SQLException {
@@ -27,13 +19,13 @@ public class AppointmentDAO {
             pstmt.setString(1, appt.getAppointmentId());
             pstmt.setString(2, appt.getPatient().getId());
             pstmt.setString(3, appt.getDoctor().getId());
-            // CHAPTER 7: LocalDateTime → SQL Timestamp conversion
+            
             pstmt.setTimestamp(4, Timestamp.valueOf(appt.getDateTime()));
             pstmt.setString(5, appt.getStatus().name());
             pstmt.setString(6, appt.getNotes());
             pstmt.setString(7, appt.getType());
 
-            // Store type-specific info as a descriptor string
+            
             String extra = "";
             if (appt instanceof ScheduledAppointment sa) {
                 extra = "duration=" + sa.getDurationMinutes() + ";reason=" + sa.getReasonForVisit();
@@ -55,10 +47,7 @@ public class AppointmentDAO {
         }
     }
 
-    /**
-     * CHAPTER 7: Advanced ResultSet — scrollable, read-only.
-     * Demonstrates TYPE_SCROLL_INSENSITIVE to navigate forward and backward.
-     */
+  
     public List<String> getAppointmentSummaries() throws SQLException {
         List<String> summaries = new ArrayList<>();
         String sql = "SELECT a.appointment_id, p.name AS patient_name, d.name AS doctor_name, " +
@@ -68,12 +57,12 @@ public class AppointmentDAO {
                      "JOIN doctors d ON a.doctor_id = d.doctor_id " +
                      "ORDER BY a.date_time DESC";
 
-        // CHAPTER 7: Scrollable ResultSet
+        
         try (Statement stmt = DBConnection.getConnection().createStatement(
                 ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
              ResultSet rs = stmt.executeQuery(sql)) {
 
-            // Demonstrate scrolling: jump to last row first to show total count
+            
             if (rs.last()) {
                 System.out.println("Total appointments in DB: " + rs.getRow());
                 rs.beforeFirst(); // scroll back to start
