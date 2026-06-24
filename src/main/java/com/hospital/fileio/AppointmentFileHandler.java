@@ -8,16 +8,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * CHAPTER 5 (Files & Streams)
- *
- * Handles binary serialization and deserialization of system data.
- * Demonstrates:
- *   - ObjectOutputStream / ObjectInputStream (Serialization — Ch5)
- *   - FileOutputStream / FileInputStream (Byte streams — Ch5)
- *   - try-with-resources for safe stream handling
- *   - Serializable interface on domain objects
- */
+
 public class AppointmentFileHandler {
 
     private static final String APPOINTMENTS_FILE = "data/appointments.dat";
@@ -26,10 +17,7 @@ public class AppointmentFileHandler {
 
     // ─── Save ─────────────────────────────────────────────────────────────
 
-    /**
-     * CHAPTER 5: Serialize appointments list → binary file.
-     * ObjectOutputStream wraps FileOutputStream (decorator pattern from Ch5).
-     */
+    
     public static void saveAppointments(List<Appointment> appointments) throws IOException {
         ensureDataDirectory();
         try (ObjectOutputStream oos = new ObjectOutputStream(
@@ -59,10 +47,7 @@ public class AppointmentFileHandler {
 
     // ─── Load ─────────────────────────────────────────────────────────────
 
-    /**
-     * CHAPTER 5: Deserialize appointments list from binary file.
-     * Returns empty list if file doesn't exist yet (first run).
-     */
+    
     @SuppressWarnings("unchecked")
     public static List<Appointment> loadAppointments() throws IOException, ClassNotFoundException {
         File f = new File(APPOINTMENTS_FILE);
