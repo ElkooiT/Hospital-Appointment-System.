@@ -14,20 +14,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Entry point — wires all 7 chapters together into a single CLI application.
- *
- * CHAPTER COVERAGE SUMMARY:
- *   Ch1 - OOP basics           → Person, Patient, Doctor, Appointment (classes/objects)
- *   Ch2 - Inheritance          → Person→Patient/Doctor, Appointment→Scheduled/WalkIn
- *   Ch3 - Polymorphism/Interf. → Notifiable, Schedulable, polymorphic displayInfo()
- *   Ch4 - Exception Handling   → AppointmentConflictException, PatientNotFoundException,
- *                                 InvalidTimeSlotException, try/catch/finally
- *   Ch5 - Files & Streams      → Serialization (AppointmentFileHandler),
- *                                 BufferedWriter/PrintWriter (ReportGenerator)
- *   Ch6 - Collections          → AppointmentManager uses ArrayList + HashMap
- *   Ch7 - JDBC                 → PatientDAO, DoctorDAO, AppointmentDAO with MySQL
- */
+
 public class Main {
 
     private static final AppointmentManager manager = new AppointmentManager();
@@ -46,7 +33,7 @@ public class Main {
         System.out.println("║     Java OOP Course Project                  ║");
         System.out.println("╚══════════════════════════════════════════════╝");
 
-        // CHAPTER 7: Attempt DB connection — graceful fallback if unavailable
+       
         try {
             DBConnection.getConnection();
             dbAvailable = true;
@@ -56,10 +43,10 @@ public class Main {
             System.out.println("   (" + e.getMessage() + ")");
         }
 
-        // CHAPTER 5: Load previously saved data from binary files
+        
         loadFromFiles();
 
-        // Seed demo data if the system is empty
+        
         if (manager.getAllDoctors().isEmpty()) {
             seedDemoData();
         }
@@ -79,7 +66,7 @@ public class Main {
             }
         }
 
-        // CHAPTER 5: Save to files on exit
+      
         saveToFiles();
         DBConnection.closeConnection();
         System.out.println("\nGoodbye. 👋");
@@ -108,19 +95,19 @@ public class Main {
         switch (choice) {
             case 1 -> registerPatient();
             case 2 -> {
-                // CHAPTER 6: Iterating ArrayList
+                
                 List<Patient> patients = manager.getAllPatients();
                 if (patients.isEmpty()) { System.out.println("No patients registered."); return; }
-                // CHAPTER 3: Polymorphic displayInfo() called on each Patient
+                
                 patients.forEach(p -> System.out.println("  " + p.displayInfo()));
             }
             case 3 -> {
                 String id = readString("Enter Patient ID: ");
                 try {
-                    Patient p = manager.getPatient(id);  // CHAPTER 4: throws checked exception
+                    Patient p = manager.getPatient(id);  
                     System.out.println(p.displayInfo());
                 } catch (PatientNotFoundException e) {
-                    System.out.println("❌ " + e.getMessage());  // CHAPTER 4: caught here
+                    System.out.println("❌ " + e.getMessage());  
                 }
             }
         }
@@ -165,7 +152,7 @@ public class Main {
             case 3 -> {
                 List<Appointment> all = manager.getAllAppointments();
                 if (all.isEmpty()) { System.out.println("No appointments."); return; }
-                // CHAPTER 3: getSummary() called polymorphically on ScheduledAppointment or WalkIn
+                
                 all.forEach(a -> {
                     System.out.println("\n" + a.getSummary());
                     System.out.println("─".repeat(40));
@@ -197,7 +184,7 @@ public class Main {
 
         switch (choice) {
             case 1 -> {
-                // CHAPTER 5: Character stream output (PrintWriter)
+                
                 try {
                     ReportGenerator.generateSystemReport(
                             manager.getAllPatients(),
@@ -218,7 +205,7 @@ public class Main {
                         .findFirst().orElse(null);
                 if (target == null) { System.out.println("Not found."); return; }
                 try {
-                    // CHAPTER 5: Character stream output (BufferedWriter)
+                    
                     ReportGenerator.generateAppointmentReceipt(target);
                 } catch (IOException e) {
                     System.out.println("❌ " + e.getMessage());
@@ -244,7 +231,7 @@ public class Main {
 
         switch (choice) {
             case 1 -> {
-                // CHAPTER 7: INSERT via PreparedStatement
+                
                 try {
                     for (Patient p : manager.getAllPatients()) patientDAO.insertPatient(p);
                 } catch (SQLException e) { System.out.println("❌ DB error: " + e.getMessage()); }
@@ -260,7 +247,7 @@ public class Main {
                 } catch (SQLException e) { System.out.println("❌ DB error: " + e.getMessage()); }
             }
             case 4 -> {
-                // CHAPTER 7: Scrollable ResultSet demo
+                
                 try {
                     List<String> rows = appointmentDAO.getAppointmentSummaries();
                     if (rows.isEmpty()) { System.out.println("No records in DB."); return; }
@@ -321,16 +308,16 @@ public class Main {
 
         try {
             LocalDateTime dt = LocalDateTime.parse(dtStr, DT_FMT);
-            // CHAPTER 4: Multiple checked exceptions — ALL must be caught
+            
             ScheduledAppointment appt = manager.bookScheduledAppointment(
                     patientId, doctorId, dt, duration, reason);
             System.out.println("\n✅ Appointment booked!\n" + appt.getSummary());
         } catch (PatientNotFoundException e) {
-            System.out.println("❌ " + e.getMessage());         // Ch4
+            System.out.println("❌ " + e.getMessage());         
         } catch (AppointmentConflictException e) {
-            System.out.println("❌ " + e.getMessage());         // Ch4
+            System.out.println("❌ " + e.getMessage());         
         } catch (InvalidTimeSlotException e) {
-            System.out.println("❌ " + e.getMessage());         // Ch4
+            System.out.println("❌ " + e.getMessage());         
         } catch (DateTimeParseException e) {
             System.out.println("❌ Invalid date format. Use yyyy-MM-dd HH:mm");
         }
@@ -353,7 +340,7 @@ public class Main {
     // ─── File I/O ─────────────────────────────────────────────────────────
 
     private static void saveToFiles() {
-        // CHAPTER 5: Serialization — ObjectOutputStream
+        
         try {
             AppointmentFileHandler.savePatients(manager.getAllPatients());
             AppointmentFileHandler.saveDoctors(manager.getAllDoctors());
@@ -364,7 +351,7 @@ public class Main {
     }
 
     private static void loadFromFiles() {
-        // CHAPTER 5: Deserialization — ObjectInputStream
+        
         try {
             List<Patient>     patients     = AppointmentFileHandler.loadPatients();
             List<Doctor>      doctors      = AppointmentFileHandler.loadDoctors();
@@ -401,7 +388,7 @@ public class Main {
 
     private static int readInt(String prompt) {
         System.out.print(prompt);
-        // CHAPTER 4: Handle bad input gracefully
+        
         try {
             return Integer.parseInt(scanner.nextLine().trim());
         } catch (NumberFormatException e) {
