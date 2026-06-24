@@ -6,11 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * CHAPTER 7 (JDBC — Database Programming)
- *
- * Data Access Object for Doctor table. Full CRUD.
- */
+
 public class DoctorDAO {
 
     public void insertDoctor(Doctor doctor) throws SQLException {
@@ -37,7 +33,7 @@ public class DoctorDAO {
         try (Statement stmt = DBConnection.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
-            // CHAPTER 7: ResultSetMetaData — inspect column names dynamically
+            
             ResultSetMetaData rsMeta = rs.getMetaData();
             System.out.println("Columns in doctors table: " + rsMeta.getColumnCount());
 
