@@ -3,13 +3,7 @@ package com.hospital.models;
 import com.hospital.interfaces.Notifiable;
 import com.hospital.interfaces.Schedulable;
 
-/**
- * CHAPTER 2 (Inheritance) + CHAPTER 3 (Interfaces)
- * 
- * Doctor extends Person and implements both Notifiable and Schedulable.
- * Demonstrates: multiple interface implementation, method overriding,
- * and the IS-A relationship (Doctor IS-A Person).
- */
+
 public class Doctor extends Person implements Notifiable, Schedulable {
 
     private static final long serialVersionUID = 1L;
@@ -31,7 +25,7 @@ public class Doctor extends Person implements Notifiable, Schedulable {
         return "DOCTOR";
     }
 
-    // CHAPTER 3 (Polymorphism): Doctor's displayInfo adds specialization
+    
     @Override
     public String displayInfo() {
         return super.displayInfo() +
@@ -39,13 +33,13 @@ public class Doctor extends Person implements Notifiable, Schedulable {
                         specialization, licenseNumber, available ? "Yes" : "No");
     }
 
-    // CHAPTER 3 (Interfaces): Notifiable implementation
+    
     @Override
     public void sendReminder(String message) {
         System.out.println("📧 Email to Dr. " + getName() + " (" + getEmail() + "): " + message);
     }
 
-    // CHAPTER 3 (Interfaces): Schedulable implementation
+    
     @Override
     public void schedule(String timeSlot) {
         System.out.println("📅 Dr. " + getName() + " scheduled for: " + timeSlot);
